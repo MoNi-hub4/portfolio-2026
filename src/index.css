@@ -62,7 +62,7 @@
   .project-card { height: min(850px, calc(100svh - 14rem)); }
 }
 
-/* Short landscape screens use ordinary flow so every image remains reachable. */
+/* Only very short landscape screens need ordinary flow. Keep portrait phones sticky. */
 @media (orientation: landscape) and (max-height: 500px) {
   .project-stack { padding-bottom: 0; }
   .project-slot { position: relative; top: auto; height: auto; margin-bottom: 32px; }
@@ -97,6 +97,17 @@
   box-shadow: inset 0 1px 0 #d7e2ea20, 20px 25px 65px #0009, 0 0 70px #7621b022;
 }
 .developer-code { padding: clamp(16px, 4cqw, 28px); font-size: clamp(9px, 3cqw, 17px); line-height: 1.9; color: #d7e2ea; }
+.developer-code-line { position: relative; white-space: pre; }
+.developer-typed-text { position: absolute; inset: 0; }
+.developer-cursor {
+  display: inline-block; width: 0.5ch; height: 1.05em; margin-left: 0.15ch;
+  vertical-align: -0.12em; background: #caa7e4;
+  animation: developer-cursor-blink 0.8s step-end infinite;
+}
+@keyframes developer-cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
 .developer-orbit { position: absolute; z-index: -1; inset: 5% 17%; border: 1px solid #d7e2ea20; border-radius: 50%; }
 .developer-orbit-one { transform: rotate(-35deg); }
 .developer-orbit-two { inset: 23% -3%; transform: rotate(28deg); border-color: #a773cd40; }
@@ -116,6 +127,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .developer-cursor { animation: none; }
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
   .project-stack { padding-bottom: 0; }
   .project-slot { position: relative; top: auto; height: auto; margin-bottom: 32px; }
