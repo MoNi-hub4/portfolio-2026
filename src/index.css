@@ -63,7 +63,7 @@
 }
 
 /* Short landscape screens use ordinary flow so every image remains reachable. */
-@media (max-height: 820px) {
+@media (orientation: landscape) and (max-height: 500px) {
   .project-stack { padding-bottom: 0; }
   .project-slot { position: relative; top: auto; height: auto; margin-bottom: 32px; }
   .project-card { height: auto; min-height: 0; transform: none !important; }
