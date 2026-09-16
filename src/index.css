@@ -1,0 +1,125 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+  * { margin: 0; padding: 0; }
+  html, body, #root { min-height: 100%; background: #0c0c0c; }
+  html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+  body { font-family: "Kanit", Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  button, a { -webkit-tap-highlight-color: transparent; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 2px solid #ca6ffc; outline-offset: 6px; }
+  ::selection { background: #7621b0; color: white; }
+}
+
+@layer components {
+  .hero-heading {
+    background: linear-gradient(180deg, #646973 0%, #bbccd7 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .section-heading {
+    font-size: clamp(3rem, 12vw, 160px);
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    text-align: center;
+  }
+  .contact-button {
+    background: linear-gradient(123deg, #18011f 7%, #b600a8 37%, #7621b0 72%, #be4c00 100%);
+    box-shadow: 0 4px 4px rgba(181, 1, 167, 0.25), inset 4px 4px 12px #7721b1;
+    outline: 2px solid white;
+    outline-offset: -3px;
+  }
+  .contact-button:focus-visible { outline: 3px solid #e9bbff; outline-offset: 5px; }
+}
+
+/* Keep overflow: clip on the main wrapper: overflow: hidden breaks sticky cards. */
+.hero-section { height: 100svh; overflow-x: clip; }
+.skip-link { position: fixed; left: 16px; top: -100px; z-index: 100; border-radius: 8px; padding: 12px 20px; background: #d7e2ea; color: #0c0c0c; }
+.skip-link:focus { top: 16px; }
+
+/* Each 85vh sticky slot shares the whole stack as its containing block. */
+.project-stack { padding-bottom: 30svh; }
+.project-slot { position: sticky; top: calc(6rem + var(--card-offset, 0px)); height: 85vh; height: 85svh; }
+.project-card {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  height: min(850px, calc(100svh - 13rem));
+  min-height: 380px;
+  box-shadow: 0 -12px 48px #0003;
+}
+.project-images { min-height: 0; }
+.project-cover-image img { position: absolute; inset: 0; }
+
+/* Fit the imagery into the visible card instead of clipping it below the fold. */
+@media (min-width: 768px) {
+  .project-slot { top: calc(8rem + var(--card-offset, 0px)); }
+  .project-card { height: min(850px, calc(100svh - 14rem)); }
+}
+
+/* Short landscape screens use ordinary flow so every image remains reachable. */
+@media (max-height: 820px) {
+  .project-stack { padding-bottom: 0; }
+  .project-slot { position: relative; top: auto; height: auto; margin-bottom: 32px; }
+  .project-card { height: auto; min-height: 0; transform: none !important; }
+  .project-images { height: auto; min-height: 380px; }
+  .project-cover-image { flex: none; aspect-ratio: 16 / 10; }
+}
+
+.portfolio-dialog { position: fixed; width: min(720px, calc(100vw - 32px)); max-height: calc(100svh - 48px); margin: auto; overscroll-behavior: contain; }
+.portfolio-dialog.project-dialog { width: min(1180px, calc(100vw - 32px)); }
+.portfolio-dialog::backdrop { background: #000b; backdrop-filter: blur(10px); }
+
+/* Image fallbacks preserve the layout when a replacement screenshot fails. */
+.image-fallback { background: radial-gradient(ellipse at 30% 15%, #4c45645e, transparent 55%), linear-gradient(140deg, #252936, #121319 70%); }
+.fallback-orb {
+  position: absolute; left: 50%; top: 45%; width: 48%; aspect-ratio: 1;
+  transform: translate(-50%, -50%) rotate(-24deg); border-radius: 50%;
+  background: radial-gradient(circle at 28% 20%, #d9e5f4, #7b789e 21%, #555771 40%, #262333 66%, #09090e 82%);
+  box-shadow: inset -8px -12px 22px #0008, 0 20px 40px #0005;
+}
+.fallback-orb span { position: absolute; inset: 8%; border: 1px solid #d7e2ea66; border-radius: 50%; }
+.fallback-orb span:nth-child(2) { inset: 20% -12%; transform: rotate(48deg); }
+.fallback-orb span:nth-child(3) { inset: -12% 25%; transform: rotate(35deg); }
+
+/* Code-native hero artwork. Project screenshots are separate local assets. */
+.developer-visual { position: relative; isolation: isolate; width: 100%; aspect-ratio: 1; container-type: inline-size; }
+.developer-window {
+  position: absolute; left: 8%; top: 17%; width: 84%; overflow: hidden;
+  border: 1px solid #d7e2ea45; border-radius: 22px;
+  background: linear-gradient(145deg, #2a2639f5, #121217f5 70%);
+  transform: perspective(900px) rotateY(-12deg) rotateX(6deg) rotate(-6deg);
+  box-shadow: inset 0 1px 0 #d7e2ea20, 20px 25px 65px #0009, 0 0 70px #7621b022;
+}
+.developer-code { padding: clamp(16px, 4cqw, 28px); font-size: clamp(9px, 3cqw, 17px); line-height: 1.9; color: #d7e2ea; }
+.developer-orbit { position: absolute; z-index: -1; inset: 5% 17%; border: 1px solid #d7e2ea20; border-radius: 50%; }
+.developer-orbit-one { transform: rotate(-35deg); }
+.developer-orbit-two { inset: 23% -3%; transform: rotate(28deg); border-color: #a773cd40; }
+.developer-database {
+  position: absolute; right: 1%; bottom: 8%; width: 29%; aspect-ratio: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+  border: 1px solid #d7e2ea55; border-radius: 28%; color: #e1d7eb;
+  background: radial-gradient(circle at 25% 15%, #786988, #363044 50%, #15121d 90%);
+  box-shadow: inset 3px 3px 10px #ddd2ec30, 8px 12px 35px #0008;
+  transform: rotate(10deg);
+}
+.developer-database svg { width: 50%; height: 50%; }
+.developer-database span { font-size: clamp(8px, 2cqw, 11px); letter-spacing: 0.2em; }
+.developer-code-badge { position: absolute; left: 1%; bottom: 15%; display: grid; place-items: center; width: 20%; aspect-ratio: 1; border: 1px solid #d7e2ea40; border-radius: 28%; color: #c9dce7; background: linear-gradient(140deg, #475666, #171b24); transform: rotate(-12deg); box-shadow: 8px 12px 30px #0006; }
+.developer-code-badge svg { width: 60%; height: 60%; }
+.developer-decoration { display: grid; place-items: center; aspect-ratio: 1; border: 1px solid #d7e2ea55; border-radius: 26%; background: linear-gradient(140deg, #8b829d80, #121318); transform: rotate(-15deg); box-shadow: inset 4px 4px 14px #d7e2ea20; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  .project-stack { padding-bottom: 0; }
+  .project-slot { position: relative; top: auto; height: auto; margin-bottom: 32px; }
+  .project-card { height: auto; min-height: 0; }
+  .project-images { height: auto; min-height: 380px; }
+  .project-cover-image { flex: none; aspect-ratio: 16 / 10; }
+}
